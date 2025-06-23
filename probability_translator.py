@@ -119,19 +119,34 @@ mode = st.radio(
 
 base_events = game_events if mode == "Game-based" else misc_events
 
-st.markdown("Enter a probability as a percentage (e.g. `1%`) or odds (`1 in 200`)""")
+st.markdown("Enter a probability as a percentage (e.g. `1%`), a decimal (`0.12`) or odds (`1 in 200`)""")
 
 input_str = st.text_input("Your probability:", "1 in 221")
 
 # --- Parse input ---
+def is_positive_whole_number(s):
+    try:
+        f = float(s)
+        return f.is_integer() and f > 0
+    except ValueError:
+        return False
+
 def parse_probability(s):
     s = s.strip().lower()
     try:
         if "in" in s:
             parts = s.split("in")
-            numerator = float(parts[0].strip())
-            denominator = float(parts[1].strip())
-            return numerator / denominator
+            z0 = float(parts[0].strip())
+            z1 = float(parts[1].strip())
+            if is_positive_whole_number(z0) and is_positive_whole_number(z1):
+                if z1 <= z0:
+                    st.error("For P in Q odds, P must be smaller than Q.")
+                    st.stop()
+                else:
+                    return z0 / z1
+            else:
+                st.error("The numbers should be positive integers.")
+                st.stop()
         elif "%" in s:
             return float(s.strip('%')) / 100
         else:
@@ -141,8 +156,11 @@ def parse_probability(s):
 
 p = parse_probability(input_str)
 
-if p is None or not (0 < p < 1):
-    st.error("Please enter a valid probability between 0 and 100% or as odds (1 in N).")
+if p is None:
+    st.error("Wrong input probability format.")
+    st.stop()
+elif p is not (1e-10 <= p <= 1-1e-10):
+    st.error("Probability must be between 0 and 100% (exclusive). Values too close (within 1e-10) are not supported.")
     st.stop()
 
 # --- Display core forms ---
