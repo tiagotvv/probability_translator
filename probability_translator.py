@@ -159,9 +159,11 @@ p = parse_probability(input_str)
 if p is None:
     st.error("Wrong input probability format.")
     st.stop()
-elif p is not (1e-10 <= p <= 1-1e-10):
+elif p < 1e-10 and p > 1-1e-10:
     st.error("Probability must be between 0 and 100% (exclusive). Values too close (within 1e-10) are not supported.")
     st.stop()
+else:
+    pass
 
 # --- Display core forms ---
 st.subheader("🔢 Equivalent Probability Values")
