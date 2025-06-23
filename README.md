@@ -1,4 +1,4 @@
-# 🧠 Translating Probabilities
+# Probability Translator
 
 This is a small web app built with **Streamlit** that helps users understand what abstract probabilities actually *mean*. By translating probabilities into relatable real-world analogies using **dice**, **cards**, **coins**, **birth stats**, and other human-scale references, it makes numbers like “0.2% chance” feel concrete.
 
@@ -14,3 +14,5 @@ This is a small web app built with **Streamlit** that helps users understand wha
 
 - **Game-based**: analogies using dice, cards, coins, poker hands, etc.
 - **Miscellaneous**: analogies using biological, social, and everyday probabilities.
+
+<img src="screenshot.png"  style="width: 70%; height: 70%" alt="drawing"/>
